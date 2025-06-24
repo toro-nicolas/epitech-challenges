@@ -8,7 +8,11 @@ const AccountSchema = new Schema({
     required: true,
     unique: true
   },
-  username: {
+  first_name: {
+    type: String,
+    required: true
+  },
+  last_name: {
     type: String,
     required: true
   },
@@ -18,12 +22,17 @@ const AccountSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    required: true
   },
-  level: {
-    type: Number,
-    default: 0
+  role: {
+    type: String,
+    enum: ['student', 'teacher', 'admin'],
+    default: 'student',
+    required: true
   }
-}, { id: false });
+}, {
+  id: false
+});
 
 export const Account = model('Account', AccountSchema);

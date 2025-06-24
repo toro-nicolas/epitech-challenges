@@ -7,7 +7,8 @@ export default function Register() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
@@ -18,7 +19,7 @@ export default function Register() {
       const res = await fetch("http://localhost:3001/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password }),
+        body: JSON.stringify({ email, first_name, last_name, password }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -28,7 +29,7 @@ export default function Register() {
         setMessage(data.message || "Registration failed.");
       }
     } catch {
-      setMessage("Server error.");
+      setMessage("Server error: unable to register.");
     }
   };
 
@@ -51,13 +52,23 @@ export default function Register() {
           />
         </label>
         <label className="flex flex-col">
-          <span className="mb-1 text-gray-700">Username</span>
+          <span className="mb-1 text-gray-700">First name</span>
           <input
             type="text"
             className="border rounded px-3 py-2"
             required
-            value={username}
-            onChange={e => setUsername(e.target.value)}
+            value={first_name}
+            onChange={e => setFirstName(e.target.value)}
+          />
+        </label>
+        <label className="flex flex-col">
+          <span className="mb-1 text-gray-700">Last name</span>
+          <input
+            type="text"
+            className="border rounded px-3 py-2"
+            required
+            value={last_name}
+            onChange={e => setLastName(e.target.value)}
           />
         </label>
         <label className="flex flex-col">

@@ -17,12 +17,14 @@ router.post('/login', async (request: Request, response: Response): Promise<void
     const user = await Account.findOne({ email });
     if (!user) {
       response.status(401).json({ message: 'Invalid email or password.' });
+      console.log('Login attempt with non-existent email:', email);
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       response.status(401).json({ message: 'Invalid email or password.' });
+      console.log('Login attempt with incorrect password for email:', email);
       return;
     }
 
@@ -31,8 +33,9 @@ router.post('/login', async (request: Request, response: Response): Promise<void
       user: {
         id: user._id,
         email: user.email,
-        username: user.username,
-        level: user.level,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        role: user.role,
       },
     });
   } catch (err) {
