@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { Account } from "../models/account";
+import { Account } from "../../models/account";
 import bcrypt from "bcrypt";
 
 
@@ -19,7 +19,6 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       response.status(409).json({ message: 'Email already exists.' });
       return;
     }
-
 
     last_name = last_name.toUpperCase();
     first_name = first_name

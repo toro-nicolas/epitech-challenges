@@ -7,8 +7,9 @@ import cors from 'cors';
 import * as database from './config/database';
 
 /* Import routes */
-import register from './routes/register';
-import login from './routes/login';
+import register from './routes/account/register';
+import login from './routes/account/login';
+import accounts from './routes/account/accounts';
 
 
 
@@ -30,6 +31,7 @@ app.get('/', (request: Request, response: Response) => {
 /* Set up routes */
 app.use('/api', register);
 app.use('/api', login);
+app.use('/api', accounts);
 
 /* Set not found handler */
 app.use((request: Request, response: Response) => {

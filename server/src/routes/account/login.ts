@@ -1,13 +1,16 @@
 import { Request, Response, Router } from "express";
-import { Account } from "../models/account";
+import { Account } from "../../models/account";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 
 
 const router = Router();
+const JWT_SECRET = process.env.JWT_SECRET || 'epitech-challenges';
 
 router.post('/login', async (request: Request, response: Response): Promise<void> => {
   const { email, password } = request.body;
+  //console.log(request.body);
   if (!email || !password) {
     response.status(400).json({ message: 'Email and password are required.' });
     return;
@@ -28,8 +31,15 @@ router.post('/login', async (request: Request, response: Response): Promise<void
       return;
     }
 
+    const token = jwt.sign(
+        { id: user._id, role: user.role },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+    );
+
     response.json({
       message: 'Login successful',
+      token,
       user: {
         id: user._id,
         email: user.email,
