@@ -27,4 +27,4 @@ const ChallengeSchema = new Schema({
   id: false
 });
 
-export const Challenge = model('Activity', ChallengeSchema);
+export const Challenge = model('Challenge', ChallengeSchema);
