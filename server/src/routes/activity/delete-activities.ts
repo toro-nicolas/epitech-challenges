@@ -13,6 +13,7 @@ router.delete('/activities/:id', authenticateToken, authorizeTeacher, async (req
             response.status(404).json({ error: 'Activity not found' });
             return;
         }
+        // TODO: delete user activities associated with this activity
         response.json({ message: 'Activity ' + request.params.id + ' deleted' });
     } catch (err) {
         response.status(500).json({ error: 'Server error', details: err });
