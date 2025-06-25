@@ -1,12 +1,12 @@
 import express, {Request, Response} from 'express';
 import { Challenge } from '../../models/challenge';
-import {authenticateToken} from "../../middleware/auth";
+import {authenticateToken, authorizeTeacher} from "../../middleware/auth";
 
 
 
 const router = express.Router();
 
-router.get('/challenges', authenticateToken, async (request: Request, response: Response): Promise<void> => {
+router.get('/challenges', authenticateToken, authorizeTeacher, async (request: Request, response: Response): Promise<void> => {
     try {
         const challenges = await Challenge.find();
         response.json(challenges);
@@ -16,7 +16,7 @@ router.get('/challenges', authenticateToken, async (request: Request, response: 
     }
 });
 
-router.get('/challenges/:id', authenticateToken, async (request: Request, response: Response): Promise<void> => {
+router.get('/challenges/:id', authenticateToken, authorizeTeacher, async (request: Request, response: Response): Promise<void> => {
     try {
         const challenge = await Challenge.findById(request.params.id);
         if (challenge)
