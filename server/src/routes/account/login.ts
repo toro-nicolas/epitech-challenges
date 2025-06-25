@@ -9,14 +9,13 @@ const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'epitech-challenges';
 
 router.post('/login', async (request: Request, response: Response): Promise<void> => {
-  const { email, password } = request.body;
-  //console.log(request.body);
-  if (!email || !password) {
-    response.status(400).json({ message: 'Email and password are required.' });
-    return;
-  }
-
   try {
+    const { email, password } = request.body;
+    if (!email || !password) {
+      response.status(400).json({ message: 'Fields are missing. Please provide email and password.' });
+      return;
+    }
+
     const user = await Account.findOne({ email });
     if (!user) {
       response.status(401).json({ message: 'Invalid email or password.' });
@@ -38,7 +37,7 @@ router.post('/login', async (request: Request, response: Response): Promise<void
     );
 
     response.json({
-      message: 'Login successful',
+      message: 'Login successful.',
       token,
       user: {
         id: user._id,
@@ -49,7 +48,8 @@ router.post('/login', async (request: Request, response: Response): Promise<void
       },
     });
   } catch (err) {
-    response.status(500).json({ message: 'Server error' });
+    response.status(500).json({ message: 'Server error.', details: err });
+    console.log(err);
   }
 });
 

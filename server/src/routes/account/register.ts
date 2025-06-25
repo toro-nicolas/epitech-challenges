@@ -7,24 +7,24 @@ import bcrypt from "bcrypt";
 const router = Router();
 
 router.post('/register', async (request: Request, response: Response): Promise<void> => {
-  let { email, first_name, last_name, password } = request.body;
-  if (!email || !first_name || !last_name || !password) {
-    response.status(400).json({ message: 'All fields are required.' });
-    return;
-  }
-
   try {
+    let { email, first_name, last_name, password } = request.body;
+    if (!email || !first_name || !last_name || !password) {
+      response.status(400).json({ message: 'Fields are missing. Please provide email, first name, last name, and password.' });
+      return;
+    }
+
     const existing = await Account.findOne({ $or: [{ email }] });
     if (existing) {
       response.status(409).json({ message: 'Email already exists.' });
       return;
     }
 
-    last_name = last_name.toUpperCase();
     first_name = first_name
         .split(/[-\s]/)
         .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
         .join(first_name.includes('-') ? '-' : ' ');
+    last_name = last_name.toUpperCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const account = new Account({
@@ -33,9 +33,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       last_name,
       password: hashedPassword,
     });
-
     await account.save();
-    
     response.status(201).json({
       message: 'Account created successfully.',
       user: {
@@ -46,7 +44,8 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       },
     });
   } catch (err) {
-    response.status(500).json({ message: 'Server error.' });
+    response.status(500).json({ message: 'Server error.', details: err });
+    console.log(err);
   }
 });
 
