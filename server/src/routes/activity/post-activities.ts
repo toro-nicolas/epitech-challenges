@@ -1,13 +1,13 @@
 import express, {Request, Response} from 'express';
 import { Activity } from '../../models/activity';
-import {authenticateToken} from "../../middleware/auth";
+import {authenticateToken, authorizeTeacher} from "../../middleware/auth";
 import {createUserActivity, UserActivity} from "../../models/user-activity";
 
 
 
 const router = express.Router();
 
-router.post('/activities', authenticateToken, async (request: Request, response: Response): Promise<void> => {
+router.post('/activities', authenticateToken, authorizeTeacher, async (request: Request, response: Response): Promise<void> => {
     try {
         if (!request.body.title || !request.body.visible || !request.body.challenge) {
             response.status(400).json({ error: 'Fields are missing. Please provide title, visibility, and challenge.' });

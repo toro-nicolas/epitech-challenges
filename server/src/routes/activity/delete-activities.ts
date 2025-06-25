@@ -1,12 +1,12 @@
 import express, {Request, Response} from 'express';
 import { Activity } from '../../models/activity';
-import {authenticateToken} from "../../middleware/auth";
+import {authenticateToken, authorizeTeacher} from "../../middleware/auth";
 
 
 
 const router = express.Router();
 
-router.delete('/activities/:id', authenticateToken, async (request: Request, response: Response): Promise<void> => {
+router.delete('/activities/:id', authenticateToken, authorizeTeacher, async (request: Request, response: Response): Promise<void> => {
     try {
         const deleted = await Activity.findByIdAndDelete(request.params.id);
         if (!deleted) {

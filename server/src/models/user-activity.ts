@@ -44,6 +44,7 @@ export async function createUserActivity(userId: string, activityId: string) {
     }
     for (let file of challenge.working_files) {
         console.log(file);
+        //TODO: to test and improve
     }
     return newUserId;
 }
