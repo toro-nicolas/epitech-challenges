@@ -11,8 +11,8 @@ router.get('/accounts', authenticateToken, authorizeAdmin, async (request: Reque
         const accounts = await Account.find({}, '-password');
         response.json(accounts);
     } catch (err) {
+        response.status(500).json({ message: 'Server error.', details: err });
         console.error("Error fetching accounts:", err);
-        response.status(500).json({ message: 'Server error' });
     }
 });
 
