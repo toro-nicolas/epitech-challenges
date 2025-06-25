@@ -6,6 +6,7 @@ import {authenticateToken} from "../../middleware/auth";
 
 const router = express.Router();
 
+// TODO: supprimer les anciens user activities et ajouter les nouveaux
 router.put('/activities/:id', authenticateToken, async (request: Request, response: Response): Promise<void> => {
     try {
         const updatedActivity = await Activity.findByIdAndUpdate(
