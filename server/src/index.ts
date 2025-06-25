@@ -24,6 +24,12 @@ import getActivities from './routes/activity/get-activities';
 import postActivities from "./routes/activity/post-activities";
 import putActivities from "./routes/activity/put-activities";
 
+    /* Challenge routes */
+import deleteChallenges from './routes/challenge/delete-challenges';
+import getChallenges from './routes/challenge/get-challenges';
+import postChallenges from './routes/challenge/post-challenges';
+import putChallenges from './routes/challenge/put-challenges';
+
 
 
 /* Set up app */
@@ -58,6 +64,12 @@ app.use('/api', deleteActivities);
 app.use('/api', getActivities);
 app.use('/api', postActivities);
 app.use('/api', putActivities);
+
+    /* Challenge routes */
+app.use('/api', deleteChallenges);
+app.use('/api', getChallenges);
+app.use('/api', postChallenges);
+app.use('/api', putChallenges);
 
 /* Set not found handler */
 app.use((request: Request, response: Response) => {
