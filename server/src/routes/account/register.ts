@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 const router = Router();
 
 router.post('/register', async (request: Request, response: Response): Promise<void> => {
+  console.log(request);
   try {
     let { email, first_name, last_name, password } = request.body;
     if (!email || !first_name || !last_name || !password) {

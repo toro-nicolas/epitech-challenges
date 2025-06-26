@@ -9,6 +9,7 @@ const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'epitech-challenges';
 
 router.post('/login', async (request: Request, response: Response): Promise<void> => {
+    console.log(request);
   try {
     const { email, password } = request.body;
     if (!email || !password) {
