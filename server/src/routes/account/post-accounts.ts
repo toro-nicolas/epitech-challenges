@@ -9,9 +9,9 @@ const router = Router();
 
 router.post('/accounts', authenticateToken, authorizeAdmin, async (request: Request, response: Response): Promise<void> => {
     try {
-        let { email, first_name, last_name, password } = request.body;
+        let { email, first_name, last_name, password, role } = request.body;
         if (!email || !first_name || !last_name || !password) {
-            response.status(400).json({ error: 'Fields are missing. Please provide email, first name, last name, and password.' });
+            response.status(400).json({ error: 'Fields are missing. Please provide email, first name, last name, password, and role.' });
             return;
         }
 
@@ -33,6 +33,7 @@ router.post('/accounts', authenticateToken, authorizeAdmin, async (request: Requ
             first_name,
             last_name,
             password: hashedPassword,
+            role,
         });
         await newAccount.save();
         response.status(201).json({ message: 'Account created successfully.', account: newAccount });
