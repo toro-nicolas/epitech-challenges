@@ -15,9 +15,8 @@ const ChallengeSchema = new Schema({
     required: true
   },
   working_files: [{
-    filename: String,
-    path: String,
-    required: true
+    filename: { type: String, required: true },
+    path: { type: String, required: true }
   }],
   tester: {
     type: String, // path to the tester.zip file
