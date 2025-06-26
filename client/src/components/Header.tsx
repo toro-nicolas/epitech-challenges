@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Header() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -27,6 +27,42 @@ export default function Header() {
             <span className="font-bold text-xl text-blue-700">EPITECH Challenges</span>
           </Link>
 
+          {/* Navigation au centre */}
+          {isAuthenticated && user && (
+            <nav className="flex items-center space-x-6">
+              <Link
+                href="/activities"
+                className="text-gray-700 hover:text-blue-700 font-medium transition-colors"
+              >
+                Activités
+              </Link>
+              {['teacher', 'admin'].includes(user.role) && (
+                <>
+                  <Link
+                    href="/manage-activities"
+                    className="text-gray-700 hover:text-blue-700 font-medium transition-colors"
+                  >
+                    Gérer les activités
+                  </Link>
+                  <Link
+                    href="/manage-challenges"
+                    className="text-gray-700 hover:text-blue-700 font-medium transition-colors"
+                  >
+                    Gérer les challenges
+                  </Link>
+                </>
+              )}
+              {user.role === 'admin' && (
+                <Link
+                  href="/manage-accounts"
+                  className="text-gray-700 hover:text-blue-700 font-medium transition-colors"
+                >
+                  Gérer les comptes
+                </Link>
+              )}
+            </nav>
+          )}
+
           {/* Navigation à droite */}
           <nav className="flex items-center space-x-4">
             {!isAuthenticated ? (
@@ -45,12 +81,19 @@ export default function Header() {
                 </Link>
               </>
             ) : (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium transition-colors"
-              >
-                Déconnexion
-              </button>
+              <div className="flex items-center space-x-4">
+                {user && (
+                  <span className="text-sm text-gray-600">
+                    {user.prenom} {user.nom} ({user.role})
+                  </span>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </div>
             )}
           </nav>
         </div>

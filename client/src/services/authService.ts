@@ -19,6 +19,7 @@ export interface AuthResponse {
     email: string;
     prenom: string;
     nom: string;
+    role: 'student' | 'teacher' | 'admin';
   };
 }
 
