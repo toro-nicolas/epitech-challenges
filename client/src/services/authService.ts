@@ -85,5 +85,43 @@ export const authService = {
   setAuthData(data: AuthResponse) {
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
+  },
+
+  async verifyToken(): Promise<AuthResponse['user'] | null> {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/me`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        // Token invalide, nettoyer le localStorage
+        this.logout();
+        return null;
+      }
+
+      const userData = await response.json();
+      // Mettre à jour les données utilisateur dans le localStorage
+      const user = {
+        id: userData._id,
+        email: userData.email,
+        prenom: userData.first_name,
+        nom: userData.last_name,
+        role: userData.role
+      };
+      
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
+    } catch (error) {
+      console.error('Erreur lors de la vérification du token:', error);
+      this.logout();
+      return null;
+    }
   }
 };

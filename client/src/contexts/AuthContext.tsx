@@ -42,15 +42,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // Vérifier si l'utilisateur est déjà connecté au chargement
-    const storedToken = authService.getToken();
-    const storedUser = authService.getUser();
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(storedUser);
-    }
-    
-    setLoading(false);
+    const initializeAuth = async () => {
+      const storedToken = authService.getToken();
+      
+      if (storedToken) {
+        // Vérifier si le token est encore valide
+        const validUser = await authService.verifyToken();
+        if (validUser) {
+          setToken(storedToken);
+          setUser(validUser);
+        }
+      }
+      
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = async (data: { email: string; password: string }) => {

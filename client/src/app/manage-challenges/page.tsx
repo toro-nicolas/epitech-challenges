@@ -10,13 +10,18 @@ interface Challenge {
 }
 
 export default function ManageChallenges() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
   const router = useRouter();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [challengesLoading, setChallengesLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Attendre que le contexte d'authentification ait fini de charger
+    if (loading) {
+      return;
+    }
+
     if (!isAuthenticated) {
       router.push('/login');
       return;
@@ -28,7 +33,7 @@ export default function ManageChallenges() {
     }
     
     fetchChallenges();
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, router, loading]);
 
   const fetchChallenges = async () => {
     try {
@@ -48,9 +53,21 @@ export default function ManageChallenges() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
-      setLoading(false);
+      setChallengesLoading(false);
     }
   };
+
+  // Afficher un spinner pendant le chargement de l'authentification
+  if (loading) {
+    return (
+      <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center p-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+          <p className="text-gray-600">Vérification de l&apos;authentification...</p>
+        </div>
+      </main>
+    );
+  }
 
   if (!isAuthenticated || !user) {
     return null;
@@ -76,7 +93,7 @@ export default function ManageChallenges() {
           </div>
         )}
 
-        {loading ? (
+        {challengesLoading ? (
           <div className="text-center py-8">
             <div className="text-lg text-gray-600">Chargement des challenges...</div>
           </div>

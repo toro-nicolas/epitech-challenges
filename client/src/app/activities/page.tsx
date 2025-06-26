@@ -17,20 +17,25 @@ interface Activity {
 }
 
 export default function Activities() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Attendre que le contexte d'authentification ait fini de charger
+    if (loading) {
+      return;
+    }
+
     if (!isAuthenticated) {
       router.push('/login');
       return;
     }
     
     fetchActivities();
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, loading]);
 
   const fetchActivities = async () => {
     try {
@@ -50,7 +55,7 @@ export default function Activities() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
-      setLoading(false);
+      setActivitiesLoading(false);
     }
   };
 
@@ -63,6 +68,18 @@ export default function Activities() {
     const mins = minutes % 60;
     return `${hours}h${mins > 0 ? ` ${mins}min` : ''}`;
   };
+
+  // Afficher un spinner pendant le chargement de l'authentification
+  if (loading) {
+    return (
+      <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center p-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+          <p className="text-gray-600">Vérification de l&apos;authentification...</p>
+        </div>
+      </main>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;
@@ -79,7 +96,7 @@ export default function Activities() {
           </div>
         )}
 
-        {loading ? (
+        {activitiesLoading ? (
           <div className="text-center py-8">
             <div className="text-lg text-gray-600">Chargement des activités...</div>
           </div>
