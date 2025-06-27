@@ -6,8 +6,8 @@ import {upload} from "../../middleware/upload";
 
 
 const router = express.Router();
-//TODO: need to be tested
-router.post('/challenge', authenticateToken, authorizeTeacher, upload.fields([{ name: 'working_files' }, { name: 'tester', maxCount: 1 }]), async (request: Request, response: Response): Promise<void> => {
+
+router.post('/challenges', authenticateToken, authorizeTeacher, upload.fields([{ name: 'working_files' }, { name: 'tester', maxCount: 1 }]), async (request: Request, response: Response): Promise<void> => {
     try {
         const files = request.files as {
             working_files?: Express.Multer.File[];
