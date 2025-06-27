@@ -5,6 +5,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './challenges.module.css';
 
+
+
 interface Challenge {
   _id: string;
   title: string;
@@ -25,6 +27,8 @@ interface ChallengeFormData {
   tester: File | null;
 }
 
+
+
 export default function ManageChallenges() {
   const { isAuthenticated, user, loading } = useAuth();
   const router = useRouter();
@@ -43,8 +47,9 @@ export default function ManageChallenges() {
   });
   const [formLoading, setFormLoading] = useState(false);
 
+
+
   useEffect(() => {
-    // Attendre que le contexte d'authentification ait fini de charger
     if (loading) {
       return;
     }
@@ -83,6 +88,8 @@ export default function ManageChallenges() {
       setChallengesLoading(false);
     }
   };
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -164,6 +171,8 @@ export default function ManageChallenges() {
     }
   };
 
+
+
   const openAddModal = () => {
     resetForm();
     setError('');
@@ -182,6 +191,8 @@ export default function ManageChallenges() {
     setError('');
     setShowEditModal(true);
   };
+
+
 
   const handleEditChallenge = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,7 +277,8 @@ export default function ManageChallenges() {
     }
   };
 
-  // Afficher un spinner pendant le chargement de l'authentification
+  
+
   if (loading) {
     return (
       <main className={styles.container}>
@@ -371,7 +383,7 @@ export default function ManageChallenges() {
           </>
         )}
 
-        {/* Formulaire d'ajout */}
+        {/* Form d'ajout */}
         {showAddModal && (
           <div className={styles.modal}>
             <h2 className={styles.modalTitle}>Nouveau challenge</h2>
@@ -502,7 +514,7 @@ export default function ManageChallenges() {
           </div>
         )}
 
-        {/* Formulaire de modification */}
+        {/* Form de modification */}
         {showEditModal && editingChallenge && (
           <div className={styles.modal}>
             <h2 className={styles.modalTitle}>Modifier le challenge</h2>

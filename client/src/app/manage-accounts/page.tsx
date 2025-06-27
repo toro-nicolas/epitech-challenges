@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
+
+
 interface Account {
   _id: string;
   email: string;
@@ -19,6 +21,8 @@ interface AccountFormData {
   password: string;
   role: 'student' | 'teacher' | 'admin';
 }
+
+
 
 export default function ManageAccounts() {
   const { isAuthenticated, user, loading } = useAuth();
@@ -38,8 +42,9 @@ export default function ManageAccounts() {
   });
   const [formLoading, setFormLoading] = useState(false);
 
+
+
   useEffect(() => {
-    // Attendre que le contexte d'authentification ait fini de charger
     if (loading) {
       return;
     }
@@ -78,6 +83,8 @@ export default function ManageAccounts() {
       setAccountsLoading(false);
     }
   };
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -138,7 +145,6 @@ export default function ManageAccounts() {
     try {
       const token = localStorage.getItem('token');
       
-      // Créer un objet avec seulement les champs modifiés
       const updatedFields: Partial<AccountFormData> = {};
       if (formData.email !== editingAccount.email) updatedFields.email = formData.email;
       if (formData.first_name !== editingAccount.first_name) updatedFields.first_name = formData.first_name;
@@ -197,6 +203,8 @@ export default function ManageAccounts() {
     }
   };
 
+
+
   const openEditModal = (account: Account) => {
     console.log(account);
     setEditingAccount(account);
@@ -217,6 +225,8 @@ export default function ManageAccounts() {
     setShowAddModal(true);
   };
 
+
+
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
@@ -230,7 +240,8 @@ export default function ManageAccounts() {
     }
   };
 
-  // Afficher un spinner pendant le chargement de l'authentification
+  
+
   if (loading) {
     return (
       <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center p-8">
@@ -269,7 +280,7 @@ export default function ManageAccounts() {
           </div>
         )}
 
-        {/* Formulaire d'ajout */}
+        {/* Form d'ajout */}
         {showAddModal && (
           <div className="mb-6 bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Nouveau compte</h2>
@@ -373,7 +384,7 @@ export default function ManageAccounts() {
           </div>
         )}
 
-        {/* Formulaire de modification */}
+        {/* Form de modification */}
         {showEditModal && editingAccount && (
           <div className="mb-6 bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Modifier le compte</h2>

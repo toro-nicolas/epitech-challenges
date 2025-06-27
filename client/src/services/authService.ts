@@ -1,5 +1,7 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
+
+
 export interface LoginData {
   email: string;
   password: string;
@@ -23,6 +25,8 @@ export interface AuthResponse {
   };
 }
 
+
+
 export const authService = {
   async login(data: LoginData): Promise<AuthResponse> {
     const response = await fetch(`${API_BASE_URL}/login`, {
@@ -41,6 +45,7 @@ export const authService = {
     return response.json();
   },
 
+
   async register(data: RegisterData): Promise<AuthResponse> {
     const response = await fetch(`${API_BASE_URL}/register`, {
       method: 'POST',
@@ -58,10 +63,12 @@ export const authService = {
     return response.json();
   },
 
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
+
 
   getToken(): string | null {
     if (typeof window !== 'undefined') {
@@ -70,9 +77,11 @@ export const authService = {
     return null;
   },
 
+
   isAuthenticated(): boolean {
     return !!this.getToken();
   },
+
 
   getUser() {
     if (typeof window !== 'undefined') {
@@ -82,10 +91,12 @@ export const authService = {
     return null;
   },
 
+
   setAuthData(data: AuthResponse) {
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
   },
+
 
   async verifyToken(): Promise<AuthResponse['user'] | null> {
     const token = this.getToken();
@@ -101,13 +112,11 @@ export const authService = {
       });
 
       if (!response.ok) {
-        // Token invalide, nettoyer le localStorage
         this.logout();
         return null;
       }
 
       const userData = await response.json();
-      // Mettre à jour les données utilisateur dans le localStorage
       const user = {
         id: userData._id,
         email: userData.email,

@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { authService, AuthResponse } from '../services/authService';
 
+
+
 interface User {
   id: string;
   email: string;
@@ -21,7 +23,15 @@ interface AuthContextType {
   loading: boolean;
 }
 
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -31,22 +41,17 @@ export const useAuth = () => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    // Vérifier si l'utilisateur est déjà connecté au chargement
     const initializeAuth = async () => {
       const storedToken = authService.getToken();
       
       if (storedToken) {
-        // Vérifier si le token est encore valide
         const validUser = await authService.verifyToken();
         if (validUser) {
           setToken(storedToken);
@@ -60,6 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
   }, []);
 
+
   const login = async (data: { email: string; password: string }) => {
     try {
       const response: AuthResponse = await authService.login(data);
@@ -70,6 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw error;
     }
   };
+
 
   const register = async (data: { email: string; first_name: string; last_name: string; password: string }) => {
     try {
@@ -82,11 +89,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+
   const logout = () => {
     authService.logout();
     setToken(null);
     setUser(null);
   };
+
 
   const value: AuthContextType = {
     user,
@@ -98,6 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading
   };
 
+  
   return (
     <AuthContext.Provider value={value}>
       {children}

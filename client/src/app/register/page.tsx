@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 
+
+
 export default function Register() {
   const [formData, setFormData] = useState({
     email: '',
@@ -16,6 +18,8 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { register } = useAuth();
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -45,6 +49,8 @@ export default function Register() {
     }
   };
 
+
+  
   return (
     <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center p-8 relative">
       <div className="w-full max-w-md">

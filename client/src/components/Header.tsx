@@ -4,18 +4,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../contexts/AuthContext';
 
+
+
 export default function Header() {
   const { isAuthenticated, logout, user } = useAuth();
+
 
   const handleLogout = () => {
     logout();
   };
 
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo à gauche */}
+          {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src="/favicon.ico"
@@ -27,7 +31,7 @@ export default function Header() {
             <span className="font-bold text-xl text-blue-700">EPITECH Challenges</span>
           </Link>
 
-          {/* Navigation au centre */}
+          {/* Navigation au centre (en gros, les pages) */}
           {isAuthenticated && user && (
             <nav className="flex items-center space-x-6">
               <Link
@@ -63,7 +67,7 @@ export default function Header() {
             </nav>
           )}
 
-          {/* Navigation à droite */}
+          {/* Navigation à droite (la connexion) */}
           <nav className="flex items-center space-x-4">
             {!isAuthenticated ? (
               <>

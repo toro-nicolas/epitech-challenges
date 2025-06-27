@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
+
+
 interface Activity {
   id: string;
   name: string;
@@ -23,8 +25,9 @@ export default function Activities() {
   const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [error, setError] = useState('');
 
+
+
   useEffect(() => {
-    // Attendre que le contexte d'authentification ait fini de charger
     if (loading) {
       return;
     }
@@ -59,6 +62,8 @@ export default function Activities() {
     }
   };
 
+
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR');
   };
@@ -68,8 +73,9 @@ export default function Activities() {
     const mins = minutes % 60;
     return `${hours}h${mins > 0 ? ` ${mins}min` : ''}`;
   };
+  
 
-  // Afficher un spinner pendant le chargement de l'authentification
+  
   if (loading) {
     return (
       <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center p-8">

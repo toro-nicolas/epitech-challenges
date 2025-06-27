@@ -4,6 +4,8 @@ import "../styles/globals.css";
 import Header from "../components/Header";
 import { AuthProvider } from "../contexts/AuthContext";
 
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,10 +16,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
   title: "EPITECH Challenges",
   description: "Created by TORO Nicolas",
 };
+
+
 
 export default function RootLayout({
   children,
